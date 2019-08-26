@@ -1,0 +1,50 @@
+<!Doctype html>
+<html lang="da">
+
+<head></head>
+
+<body>
+    <p>Længde</p>
+    <input type="text" id="length"> <br>
+    <p>Bredde</p>
+    <input type="text" id="width"> <br>
+    <button>Udregn areal</button>
+    
+    <p id="area"></p>
+    
+<script>
+    
+    let length=10;
+    let width=50;
+    let areaText;
+    let area;
+    
+    document.querySelector("button").addEventListener("click",ButtonClicked);
+    
+    function ButtonClicked()
+    {
+        length=document.querySelector("#length").value;
+        width=document.querySelector("#width").value;
+        if (isNaN(length) || isNaN(width))
+            {
+              console.log("Invalid input");  
+            } 
+        else 
+            {
+            area=CalculateArea(length,width);
+            areaText="Længde: "+length+" meter, bredde: "+width+" meter, areal: "+area+" kvadratmeter";
+            document.querySelector("#area").textContent=areaText;
+            console.log(area);
+            }
+
+    }
+    function CalculateArea(l,w)
+    {
+        return(l*w);
+    }
+    
+</script>          
+    
+</body>
+
+</html>
