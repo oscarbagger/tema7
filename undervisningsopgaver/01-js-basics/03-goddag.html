@@ -1,0 +1,23 @@
+<!Doctype html>
+<html lang="da">
+
+<head></head>
+
+<body>
+           
+    <input type="text"  id="name">
+    <button>submit name</button>
+
+<script>
+    let myName;
+    
+    document.querySelector("button").addEventListener("click",SetName);
+    function SetName()
+    {
+        myName=document.querySelector("#name").value;
+        console.log("Goddag "+myName);
+    }
+</script>   
+</body>
+
+</html>
