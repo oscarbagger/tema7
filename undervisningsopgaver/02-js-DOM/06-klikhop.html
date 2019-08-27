@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #firkant {
+            height: 100px; 
+            width: 100px;
+            line-height: 100px;
+            text-align: center;
+            background-color: green;
+        }
+        #cirkel {
+            height: 100px; 
+            width: 100px;
+            border-radius: 50%;
+            line-height: 100px;
+            text-align: center;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="firkant"></div>
+    <div id="cirkel"></div>
+    <script>
+        
+        document.addEventListener("DOMContentLoaded",Start);
+        
+        const firkant=document.querySelector("#firkant");
+        const cirkel=document.querySelector("#cirkel");
+        let byttetPlads=false;
+        
+        function Start()
+        {
+            firkant.innerHTML="<img src=http://mabe-kea.dk/E19/pics/frog.png>";
+            cirkel.innerHTML="<img src=http://mabe-kea.dk/E19/pics/pig.png>";
+            
+            firkant.addEventListener("click",BytPlads);
+            cirkel.addEventListener("click",FjernFirkantEvent);
+        }
+        
+        function BytPlads()
+        {
+            if (byttetPlads)
+            {
+                firkant.innerHTML="<img src=http://mabe-kea.dk/E19/pics/frog.png>";
+                cirkel.innerHTML="<img src=http://mabe-kea.dk/E19/pics/pig.png>";
+                byttetPlads=false;
+            }
+            else 
+            {
+                cirkel.innerHTML="<img src=http://mabe-kea.dk/E19/pics/frog.png>";
+                firkant.innerHTML="<img src=http://mabe-kea.dk/E19/pics/pig.png>";
+                byttetPlads=true;
+            }
+
+        }
+        
+        function FjernFirkantEvent()
+        {
+            firkant.removeEventListener("click",BytPlads);
+        }
+
+    </script>
+</body>
+</html>

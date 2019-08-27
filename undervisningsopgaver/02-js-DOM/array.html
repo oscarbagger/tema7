@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>js-oevelse-1</title>
+    <style>
+        body {
+            color: burlywood;
+        }
+        
+        #display {
+            width: 20vw;
+            height: 20vw;
+            border: 1px solid silver;
+            margin: 7vw;
+            padding: 1vw;
+        }
+        /*********************/
+    </style>
+
+</head>
+
+<body>
+    <div id="display"></div>
+
+    <script>
+        
+        const display=document.querySelector("#display");
+        const playliste= ["sang1","sang2","sang3","sang4","sang5","sang6","sang7","sang8","sang9","sang10"];
+        
+        /*
+        for(i=0;i<playliste.length; i++)
+            {
+                var nySang=document.createElement("p");
+                nySang.textContent=playliste[i];
+                nySang.style.lineHeight="50%";
+                nySang.style.fontSize="0.7rem";
+                display.append(nySang);
+            } */
+        playliste.forEach(sang => {
+                var nySang=document.createElement("p");
+                nySang.textContent=sang;
+                nySang.style.lineHeight="50%";
+                nySang.style.fontSize="0.7rem";
+                display.append(nySang);
+        });
+    </script>
+</body>
+
+</html>
