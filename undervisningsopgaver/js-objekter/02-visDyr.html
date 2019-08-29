@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <article></article>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", Start);
+        
+        let dyr= {"navn":"gris", "type":"pattedyr", "billede":"http://mabe-kea.dk/E19/pics/pig.png", "levested":"svinefarme"}
+        let article=document.querySelector("article");
+        function Start()
+        {
+            let newText=document.createElement("p");
+            newText.textContent="Dyr: "+dyr.navn+", type: "+ dyr.type+", levested: "+dyr.levested;
+            let newIMg=document.createElement("img");
+            newIMg.src=dyr.billede;
+            article.appendChild(newText);
+            article.appendChild(newIMg);
+            
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .text {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .dato {
+            font-size: 0.8rem;
+            color: gray;
+        }
+        
+        section {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        article {
+            padding: 20px;
+            display: flex;
+            width: 88vw;
+            border-bottom: 1px solid #D9E0E6;
+            border-right: 1px solid #D9E0E6;
+        }
+        .imgCon {
+            flex-grow: 1;
+            margin: 4px;
+        }
+        .textCon {
+            flex-grow: 2;
+            margin: 4px;
+        }
+        
+        @media screen and (min-width:600px)
+        {
+            section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            article {
+                width:auto;
+            }
+        }
+        @media screen and (min-width:1200px)
+        {
+            section {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            article {
+                width:auto;
+            }
+        }
+    </style>
+</head>
+<body>
+  
+  <section id="container"></section>
+   <template>
+       <article>
+          <div class="imgCon">           
+              <img src="" alt="eventbillede">
+          </div>
+          <div class="textCon">
+                <h2></h2>
+               <p class="text"><p>
+               <p class="dato"></p> 
+          </div>
+
+       </article>
+   </template>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", Start);
+        
+        let events= [
+            {"overskrift":"Oprydning efter skybrud kan være farligt", "billede":"https://dit-roskilde.dk/wp-content/uploads/2019/08/abw-regnvejr-paraply-200x150.jpg", "dato":"23. august 2019", "brødtekst":"Når vandet fosser ind i boligen eller virksomheden som følge af et skybrud, har de fleste mennesker kun én tanke i hovedet: at redde, hvad der reddes kan, og få det indtrængende vand stoppet i en pokkers fart."},
+            {"overskrift":"Roskilde Byløb 2019", "billede":"https://dit-roskilde.dk/wp-content/uploads/2019/08/Roskilde-Byl%C3%B8b-b%C3%B8rn-august-2019-abw-7-200x150.jpg", "dato":"22. august 2019", "brødtekst":"Børneløbet blev skudt i gang kl. 18.00 og der var fart på de små ben! Dit Roskilde var et hurtigt smut forbi."},
+            {"overskrift":"H.K.H. Kronprinsen åbner Naturens Dag 2019", "billede":"https://dit-roskilde.dk/wp-content/uploads/2019/08/kronprinsen2010_Territorium-200x150.jpg", "dato":"22. august 2019", "brødtekst":"5. klasse fra Bramsnæsvigskolen får sved på panden, når de sammen med Hans Kongelige Højhed Kronprinsen skyder Naturens Dag i gang i det betagende landskab i Ejby Ådal ved Roskilde."},
+            {"overskrift":"Skandinavisk Lego finale kommer til Roskilde", "billede":"https://dit-roskilde.dk/wp-content/uploads/2019/08/Lego_robot-200x150.jpg", "dato":"22. august 2019", "brødtekst":"Skoleelever fra Danmark, Norge og Sverige dyster hvert år i november i den skandinaviske finale i First Lego League – verdens største teknologi- og projektturnering for 10-16 årige. Og i år kommer det til at foregå i Roskilde Kongrescenter Bauhaus Arena."},
+            {"overskrift":"Alzheimerforeningen mangler indsamlere i Roskilde", "billede":"https://dit-roskilde.dk/wp-content/uploads/2019/08/2019-08-20_Foto_4-ige_Nellie_Alzheimerforenningen_web-200x150.jpg", "dato":"22. august 2019", "brødtekst":"Under overskriften ‘Husk mig’ går hundredvis af mennesker på gaden lørdag d. 21. september til Alzheimerforeningens landsindsamling for at samle ind til fordel for de omkring 89.000 mennesker, der lever med en alvorlig demenssygdom."}
+            ];
+        const container=document.querySelector("#container");
+        
+        function Start()
+        {
+            const temp=document.querySelector("template");
+            
+            events.forEach(e => {
+                let klon=temp.cloneNode(true).content;
+                klon.querySelector("h2").textContent=e.overskrift;
+                klon.querySelector("img").src=e.billede;
+                klon.querySelector("p").textContent=e.brødtekst;
+                klon.querySelector(".dato").textContent=e.dato;
+
+                container.appendChild(klon);
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        article {
+            border: 1px solid black;
+            margin: 2px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+  
+  <section id="container"></section>
+   <template>
+       <article>
+           <h2></h2>
+           <img src="" alt="">
+           <p class="type"></p>
+           <p class="levested"></p>
+       </article>
+   </template>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", Start);
+        
+        //const navnDOM=document.querySelector("h2");
+        //const billedeDOM=document.querySelector("img");
+        //const typeDOM=document.querySelector(".type");
+        //const levestedDOM=document.querySelector(".levested");
+        
+        let dyr= [
+            {"navn":"gris", "type":"pattedyr", "billede":"http://mabe-kea.dk/E19/pics/pig.png", "levested":"svinefarmen"},
+            {"navn":"frø", "type":"amfibie", "billede":"http://mabe-kea.dk/E19/pics/frog.png", "levested":"vandhullet"},
+            {"navn":"ræv", "type":"pattedyr", "billede":"http://mabe-kea.dk/E19/pics/fox.png", "levested":"skoven"},
+            {"navn":"sild", "type":"fisk", "billede":"http://mabe-kea.dk/E19/pics/sild.jpg", "levested":"havet"},
+            {"navn":"krokodille", "type":"krybdyr", "billede":"http://mabe-kea.dk/E19/pics/kroko.jpg", "levested":"floden"}
+            ];
+        const container=document.querySelector("#container");
+        
+        function Start()
+        {
+            const temp=document.querySelector("template");
+            
+            dyr.forEach(d => {
+                let klon=temp.cloneNode(true).content;
+                klon.querySelector("h2").textContent=d.navn;
+                klon.querySelector("img").src=d.billede;
+                klon.querySelector(".type").textContent="Type: "+d.type;
+                klon.querySelector(".levested").textContent="Levested: "+d.levested;
+                container.appendChild(klon);
+            })
+        }
+    </script>
+</body>
+</html>
