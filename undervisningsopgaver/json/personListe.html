@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="da">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <style>
+            img {
+                width:100%;
+            }
+            section {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-gap: 5px;
+            }
+            article {
+                border: 1px solid black;
+                margin: 2px;
+                padding: 10px;
+            }
+            @media screen and (min-width:600px)
+            {
+                section {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media screen and (min-width:1000px)
+            {
+                section {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <section id="container"></section>
+        <template>
+            <article>
+                <h2></h2>
+                <img src="" alt="">
+                <a href="" class="github"></a>
+            </article>
+        </template>
+
+        <script>
+            let personer= [];
+
+            document.addEventListener("DOMContentLoaded", Start);
+
+            function Start()
+            {
+                const container=document.querySelector("#container");
+                HentJson();
+            }
+            async function HentJson()
+            {
+                const jsonData = await fetch("https://spreadsheets.google.com/feeds/list/1Xge7slZ9dEOTCn1Yxl3OE4xgvrXOL8Y_iu3WN1yGB1U/od6/public/values?alt=json");
+                console.log(jsonData);
+                personer=await jsonData.json();
+                VisData();  
+            }
+            function VisData()
+            {
+                let temp=document.querySelector("template");
+                personer.feed.entry.forEach(d => {
+                    let klon=temp.cloneNode(true).content;
+                    klon.querySelector("h2").textContent=d.gsx$navn.$t;
+                    klon.querySelector("img").src=d.gsx$billede.$t;
+                    klon.querySelector(".github").href="https://github.com/"+d.gsx$github.$t;
+                    klon.querySelector(".github").textContent="https://github.com/"+d.gsx$github.$t;
+                    container.appendChild(klon);
+                })
+            }
+
+
+        </script>
+    </body>
+</html>
