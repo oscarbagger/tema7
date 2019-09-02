@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Bistro Babushka</title>
+    <style>
+        section {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 5px;
+        }
+        article {
+            border: 1px solid black;
+            margin: 2px;
+            padding: 10px;
+        }
+        @media screen and (min-width:600px)
+        {
+            section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media screen and (min-width:1000px)
+        {
+            section {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Alle Retter</h1>
+   <nav>
+   <button class="filter highlight" data-type="alle">Alle</button>
+   <button class="filter" data-type="forretter">Forretter</button>
+   <button class="filter" data-type="hovedretter">Hovedretter</button>
+   <button class="filter" data-type="desserter">Desserter</button>
+   <button class="filter" data-type="drikkevarer">Drikkevarer</button>
+   </nav>
+    <section id="menu"></section>
+    <template>
+        <article>
+            <img src="" alt="">
+            <h2>Navn</h2>
+            <p>kort beskrivende tekst</p>
+            <p class="pris">pris</p>
+        </article>
+    </template>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", Start);
+        
+        let retter=[];
+        let filter="alle";
+        const menu=document.querySelector("#menu");
+        const buttons=document.querySelectorAll(".filter");
+        const overskrift=document.querySelector("h1");
+        function Start() 
+        {
+            HentJson();
+        }
+        async function HentJson() 
+        {
+            const jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            retter=await jsonData.json();
+            VisRetter();
+            AddButtonEventListeners();
+        }
+        
+        function VisRetter() 
+        {
+            menu.innerHTML="";
+            let temp=document.querySelector("template");
+            retter.feed.entry.forEach(ret => {
+                if (filter=="alle" || ret.gsx$kategori.$t==filter)
+                    {
+                        let klon=temp.cloneNode(true).content;
+                        klon.querySelector("img").src="billeder/small/"+ret.gsx$billede.$t+"-sm.jpg";
+                        klon.querySelector("h2").textContent=ret.gsx$navn.$t;
+                        klon.querySelector("p").textContent=ret.gsx$kort.$t;
+                        klon.querySelector(".pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
+                        menu.appendChild(klon);
+                    }
+            })
+        }
+        
+        function AddButtonEventListeners() 
+        {
+            buttons.forEach( b => {
+                b.addEventListener("click", FiltrerMenu);
+            })
+        }
+        
+        function FiltrerMenu() 
+        {
+            switch (this.dataset.type)
+            {
+                case "alle": 
+                    overskrift.textContent="Alle Retter";
+                    break;
+                case "forretter":  
+                    overskrift.textContent="Forretter";
+                    break;
+                case "hovedretter": 
+                    overskrift.textContent="Hovedretter";
+                    break;
+                case "desserter":  
+                    overskrift.textContent="Desserter";
+                    break;
+                case "drikkevarer":  
+                    overskrift.textContent="Drikkevarer";
+                    break;
+            }
+            filter=this.dataset.type;
+            buttons.forEach(b => {
+                b.classList.remove("highlight");
+            })
+            this.classList.add("highlight");
+            VisRetter();
+        }
+    </script>
+</body>
+</html>
