@@ -11,7 +11,7 @@
             width: 100%;
         }
         
-        section {
+        #menu {
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 10px;
@@ -23,18 +23,7 @@
             padding: 10px;
             background-color: bisque;
         }
-        @media screen and (min-width:600px)
-        {
-            section {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media screen and (min-width:1000px)
-        {
-            section {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+
         h1 {
             text-align: center;
         }
@@ -46,9 +35,73 @@
             background-color: bisque;
             border: 1px solid black;
         }
+        #popup {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: scroll;
+            display: none;
+        }
+        .indhold {
+            background: #fff;
+            width: 80vw;
+            min-height: 50vh;
+            margin: 4rem auto;
+            padding: 10px;
+            position: fixed;
+            left: 10vw;
+        }
+        .enkeltret {
+        }
+        .luk {
+            position:absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 2rem;
+        }
+        .gridRet:hover {
+            outline: 2px solid grey;
+        }
+        
+        
+        @media screen and (min-width:600px)
+        {
+            #menu {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .indhold {
+               width: 50vw; 
+                left: 25vw;
+            }
+        }
+        @media screen and (min-width:1000px)
+        {
+            #menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .indhold {
+                width: 30vw;
+                left: 35vw;            
+            }
+        }
+        
     </style>
 </head>
 <body>
+    <div id="popup">     
+        <section class="indhold">
+            <button class="luk">X</button>
+            <article class="enkeltRet">
+                <h2></h2>
+                <img src="" alt="">
+                <p></p>
+                <p class="oprindelse">oprindelse</p>
+                <p class="pris">pris</p>
+            </article>
+        </section>
+    </div>
     <h1>Alle Retter</h1>
    <nav>
    <button class="filter highlight" data-type="alle">Alle</button>
@@ -59,7 +112,7 @@
    </nav>
     <section id="menu"></section>
     <template>
-        <article>
+        <article class="gridRet">
             <img src="" alt="">
             <h2>Navn</h2>
             <p>kort beskrivende tekst</p>
@@ -101,8 +154,24 @@
                         klon.querySelector("p").textContent=ret.gsx$kort.$t;
                         klon.querySelector(".pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
                         menu.appendChild(klon);
+                        menu.lastElementChild.addEventListener("click", () => { visPopup(ret)})
                     }
             })
+        }
+        function visPopup(ret)
+        {
+            document.querySelector("#popup").style.display="block";
+            document.querySelector(".luk").addEventListener("click", LukPopup);
+            
+            document.querySelector(".enkeltRet h2").textContent=ret.gsx$navn.$t;
+            document.querySelector(".enkeltRet img").src="billeder/large/"+ret.gsx$billede.$t+".jpg";
+            document.querySelector(".enkeltRet p").textContent=ret.gsx$lang.$t;
+            document.querySelector(".enkeltRet .pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
+            document.querySelector(".enkeltRet .oprindelse").textContent="Oprindelse: "+ret.gsx$oprindelse.$t;
+        }
+        function LukPopup()
+        {
+            document.querySelector("#popup").style.display="none";
         }
         
         function AddButtonEventListeners() 

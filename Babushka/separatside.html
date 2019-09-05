@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Bistro Babushka</title>
+    <style>
+        * {
+    box-sizing: border-box;
+}
+        img {
+            width: 100%;
+        }
+        
+        #menu {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        article {
+            margin: 0;
+            padding: 10px;
+            background-color: bisque;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        nav {
+            padding-bottom: 20px;
+            text-align: center;
+        }
+        .highlight {
+            background-color: bisque;
+            border: 1px solid black;
+        }
+        #popup {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: scroll;
+            display: none;
+        }
+        .indhold {
+            background: #fff;
+            width: 80vw;
+            min-height: 50vh;
+            margin: 4rem auto;
+            padding: 10px;
+            position: fixed;
+            left: 10vw;
+        }
+        .enkeltret {
+        }
+        .luk {
+            position:absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 2rem;
+        }
+        .gridRet:hover {
+            outline: 2px solid grey;
+        }
+        
+        
+        @media screen and (min-width:600px)
+        {
+            #menu {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .indhold {
+               width: 50vw; 
+                left: 25vw;
+            }
+        }
+        @media screen and (min-width:1000px)
+        {
+            #menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .indhold {
+                width: 30vw;
+                left: 35vw;            
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="popup">     
+        <section class="indhold">
+            <button class="luk">X</button>
+            <article class="enkeltRet">
+                <h2></h2>
+                <img src="" alt="">
+                <p></p>
+                <p class="oprindelse">oprindelse</p>
+                <p class="pris">pris</p>
+            </article>
+        </section>
+    </div>
+    <h1>Alle Retter</h1>
+   <nav>
+   <button class="filter highlight" data-type="alle">Alle</button>
+   <button class="filter" data-type="forretter">Forretter</button>
+   <button class="filter" data-type="hovedretter">Hovedretter</button>
+   <button class="filter" data-type="desserter">Desserter</button>
+   <button class="filter" data-type="drikkevarer">Drikkevarer</button>
+   </nav>
+    <section id="menu"></section>
+    <template>
+        <article class="gridRet">
+            <img src="" alt="">
+            <h2>Navn</h2>
+            <p>kort beskrivende tekst</p>
+            <p class="pris">pris</p>
+        </article>
+    </template>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", Start);
+        
+        let retter=[];
+        let filter="alle";
+        const menu=document.querySelector("#menu");
+        const buttons=document.querySelectorAll(".filter");
+        const overskrift=document.querySelector("h1");
+        function Start() 
+        {
+            HentJson();
+        }
+        async function HentJson() 
+        {
+            const jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            retter=await jsonData.json();
+            VisRetter();
+            AddButtonEventListeners();
+        }
+        
+        function VisRetter() 
+        {
+            menu.innerHTML="";
+            let temp=document.querySelector("template");
+            retter.feed.entry.forEach(ret => {
+                if (filter=="alle" || ret.gsx$kategori.$t==filter)
+                    {
+                        let klon=temp.cloneNode(true).content;
+                        klon.querySelector("img").src="billeder/small/"+ret.gsx$billede.$t+"-sm.jpg";
+                        klon.querySelector("h2").textContent=ret.gsx$navn.$t;
+                        klon.querySelector("p").textContent=ret.gsx$kort.$t;
+                        klon.querySelector(".pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
+                        menu.appendChild(klon);
+                        menu.lastElementChild.addEventListener("click", () => { visPopup(ret)})
+                    }
+            })
+        }
+        function visPopup(ret)
+        {
+            document.querySelector("#popup").style.display="block";
+            document.querySelector(".luk").addEventListener("click", LukPopup);
+            
+            document.querySelector(".enkeltRet h2").textContent=ret.gsx$navn.$t;
+            document.querySelector(".enkeltRet img").src="billeder/large/"+ret.gsx$billede.$t+".jpg";
+            document.querySelector(".enkeltRet p").textContent=ret.gsx$lang.$t;
+            document.querySelector(".enkeltRet .pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
+            document.querySelector(".enkeltRet .oprindelse").textContent="Oprindelse: "+ret.gsx$oprindelse.$t;
+        }
+        function LukPopup()
+        {
+            document.querySelector("#popup").style.display="none";
+        }
+        
+        function AddButtonEventListeners() 
+        {
+            buttons.forEach( b => {
+                b.addEventListener("click", FiltrerMenu);
+            })
+        }
+        
+        function FiltrerMenu() 
+        {
+            switch (this.dataset.type)
+            {
+                case "alle": 
+                    overskrift.textContent="Alle Retter";
+                    break;
+                case "forretter":  
+                    overskrift.textContent="Forretter";
+                    break;
+                case "hovedretter": 
+                    overskrift.textContent="Hovedretter";
+                    break;
+                case "desserter":  
+                    overskrift.textContent="Desserter";
+                    break;
+                case "drikkevarer":  
+                    overskrift.textContent="Drikkevarer";
+                    break;
+            }
+            filter=this.dataset.type;
+            buttons.forEach(b => {
+                b.classList.remove("highlight");
+            })
+            this.classList.add("highlight");
+            VisRetter();
+        }
+    </script>
+</body>
+</html>
