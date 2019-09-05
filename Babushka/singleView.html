@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bistro Babushka</title>
+    <style>
+        img {
+            width: 100%;
+        }
+        main {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            overflow: scroll;
+        }
+        article {
+            margin: 0;
+            padding: 10px;
+            background-color: bisque;
+        }
+        .indhold {
+            background: #fff;
+            width: 80vw;
+            min-height: 50vh;
+            margin: 4rem auto;
+            padding: 10px;
+            position: fixed;
+            left: 10vw;
+        }
+        .luk {
+            position:absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 2rem;
+        }
+        @media screen and (min-width:600px)
+        {
+            .indhold {
+               width: 60vw; 
+                left: 20vw;
+            }
+        }
+        @media screen and (min-width:1000px)
+        {
+            .indhold {
+                width: 40vw;
+                left: 30vw;            
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>     
+        <section class="indhold">
+            <button class="luk">Tilbage</button>
+            <article class="enkeltRet">
+                <h2></h2>
+                <img src="" alt="">
+                <p></p>
+                <p class="oprindelse"></p>
+                <p class="pris"></p>
+            </article>
+        </section>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", HentJson);
+        let urlParams=new URLSearchParams(window.location.search);
+        let retID=urlParams.get("retID");
+        let retter=[];
+              
+        async function HentJson() 
+        {
+            const jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            retter=await jsonData.json();
+            VisRet();
+            document.querySelector(".luk").addEventListener("click", () => {
+                history.back();
+            })
+        }
+        function VisRet() 
+        {
+            retter.feed.entry.forEach(ret => {
+                if (ret.gsx$id.$t==retID)
+                    {
+                        document.querySelector("img").src="billeder/large/"+ret.gsx$billede.$t+".jpg";
+                        document.querySelector("h2").textContent=ret.gsx$navn.$t;
+                        document.querySelector("p").textContent=ret.gsx$lang.$t;
+                        document.querySelector(".pris").textContent="Pris: "+ret.gsx$pris.$t+",-";
+                    }
+            })
+        }
+    </script>
+</body>
+</html>

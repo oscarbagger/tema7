@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <title>Bistro Babushka</title>
     <style>
-        * {
-    box-sizing: border-box;
-}
         img {
             width: 100%;
         }
@@ -52,8 +49,6 @@
             padding: 10px;
             position: fixed;
             left: 10vw;
-        }
-        .enkeltret {
         }
         .luk {
             position:absolute;
@@ -122,17 +117,14 @@
     
 
     <script>
-        document.addEventListener("DOMContentLoaded", Start);
+        document.addEventListener("DOMContentLoaded", HentJson);
         
         let retter=[];
         let filter="alle";
         const menu=document.querySelector("#menu");
         const buttons=document.querySelectorAll(".filter");
         const overskrift=document.querySelector("h1");
-        function Start() 
-        {
-            HentJson();
-        }
+
         async function HentJson() 
         {
             const jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
